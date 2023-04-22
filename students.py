@@ -9,8 +9,14 @@ class Student:
 stud1 = Student('Вася', 'Иванов', 'М')
 stud1.finished_courses += ['Algebra']
 
+new_course = 'Zhopakurs'
+stud1.finished_courses.append(new_course)
+
 print(stud1.finished_courses)
 
+
+
+# ============================================================
 
 class Student:
     def __init__(self, name, surname, gender):
