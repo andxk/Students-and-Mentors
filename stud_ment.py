@@ -16,7 +16,13 @@ class Student:
             self.courses_in_progress.remove(course_name)
         self.finished_courses.append(course_name)   
 
- 
+
+    def rate_lector(self, lector, course, grade):
+        '''Выставление оценки лектору'''
+        if isinstance(lector, Lecturer) and course in [self.finished_courses + self.courses_in_progress]:
+            lector.rate(course, grade)
+
+
      
 class Mentor:
     '''Base class for Lecturer and Reviewer'''
@@ -38,12 +44,11 @@ class Lecturer(Mentor):
         super().__init__(name, surname)
         self.grades = {}
 
-    def rate_lector(self, lector, course, grade):
-        '''Выставление оценки лектору'''
-        if isinstance(lector, Lecturer) and course in self.courses_attached:
+    def rate(self, course, grade):
+        '''Получение оценки лектора'''
+        if course in self.courses_attached:
             self.grades.setdefault(course, [])
             self.grades[course] += [grade]
-
     
 
 
