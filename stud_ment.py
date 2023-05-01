@@ -7,6 +7,7 @@ class Student:
         self.courses_in_progress = []
         self.grades = {}
  
+
     def add_course_progress(self, course_name):
         self.courses_in_progress.append(course_name)   
 
@@ -46,6 +47,11 @@ class Lecturer(Mentor):
         super().__init__(name, surname)
         self.grades = {}
 
+    def __str__(self):
+        grades_courses = [sum(x)/len(x) for x in list(self.grades.values())] #среднее по каждому курсу
+        grades_mean = sum(grades_courses)/len(grades_courses)
+        res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за лекции: {grades_mean}'
+        return res
     
 
 
@@ -62,6 +68,9 @@ class Reviewer(Mentor):
         else:
             return 'Ошибка'
 
+    def __str__(self):# -> str:
+        res = f'Имя: {self.name} \nФамилия: {self.surname}'
+        return res
 
 
 
@@ -81,5 +90,17 @@ cool_mentor.courses_attached += ['Python']
 cool_mentor.rate_hw(best_student, 'Python', 10)
 cool_mentor.rate_hw(best_student, 'Python', 9)
 cool_mentor.rate_hw(best_student, 'Python', 10)
+
  
 print(best_student.grades)
+print(cool_mentor)
+
+lect1 = Lecturer('Роман','Катин')
+lect1.grades = {'abc':[10,2], 'cde':[4,6]}
+
+#grades_all = []
+# grades_all = [sum(x)/len(x) for x in list(lect1.grades.values())]
+# grades_mean = sum(grades_all)/len(grades_all)
+
+# print(grades_all, grades_mean)
+print(lect1)
