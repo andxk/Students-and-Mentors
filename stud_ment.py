@@ -6,7 +6,19 @@ class Student:
         self.finished_courses = []
         self.courses_in_progress = []
         self.grades = {}
+
+
+    def __str__(self):
+        res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за домашние задания: {self.mean_grade} \n'+\
+        f'Курсы в процессе изучения: {",".join(self.courses_in_progress)} \nЗавершенные курсы: {",".join(self.finished_courses)}'
+        return res
  
+
+    def mean_grade(self):
+        '''Средняя оценка за ДР по всем курсам'''
+        grades_courses = [sum(x)/len(x) for x in self.grades.values()]  # Список средних оценок по отдельным курсам
+        return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+
 
     def add_course_progress(self, course_name):
         self.courses_in_progress.append(course_name)   
@@ -24,6 +36,15 @@ class Student:
             if isinstance(lector, Lecturer) and course in lector.courses_attached:
                 lector.grades.setdefault(course, [])
                 lector.grades[course] += [grade]
+
+
+    def __lt__(self, other):
+        '''Сравнение: меньше==true'''
+        if isinstance(other, Student):
+            return self.mean_grade() < other.mean_grade()
+        else:
+            return False
+
 
 
      
@@ -47,12 +68,34 @@ class Lecturer(Mentor):
         super().__init__(name, surname)
         self.grades = {}
 
+
     def __str__(self):
-        grades_courses = [sum(x)/len(x) for x in list(self.grades.values())] #среднее по каждому курсу
-        grades_mean = sum(grades_courses)/len(grades_courses)
-        res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за лекции: {grades_mean}'
+        # grades_courses = [sum(x)/len(x) for x in list(self.grades.values())] #среднее по каждому курсу
+        # grades_mean = sum(grades_courses)/len(grades_courses)
+        # res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за лекции: {grades_mean}'
+        res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за лекции: {self.mean_grade()}'
         return res
-    
+
+
+    def mean_grade(self):
+        '''Средняя оценка лектора'''
+        # res = 0
+        # for x_list in self.grades.values():
+        #     res += sum(x_list)/len(x_list)
+        # res /= len((self.grades.values()))
+        # return res
+        grades_courses = [sum(x)/len(x) for x in self.grades.values()]  # Список средних оценок по отдельным курсам
+        return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+
+
+    def __lt__(self, lector):
+        '''Сравнение: меньше==true'''
+        if isinstance(lector, Lecturer):
+            return self.mean_grade() < lector.mean_grade()
+        else:
+            return False
+
+
 
 
 class Reviewer(Mentor):
@@ -104,3 +147,4 @@ lect1.grades = {'abc':[10,2], 'cde':[4,6]}
 
 # print(grades_all, grades_mean)
 print(lect1)
+print(lect1<cool_mentor)
