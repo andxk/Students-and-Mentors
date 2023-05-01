@@ -1,5 +1,5 @@
 class Student:
-    def __init__(self, name, surname, gender):
+    def __init__(self, name, surname, gender="unknown_gender"):
         self.name = name
         self.surname = surname
         self.gender = gender
@@ -9,15 +9,18 @@ class Student:
 
 
     def __str__(self):
-        res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за домашние задания: {self.mean_grade} \n'+\
+        res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за домашние задания: {self.mean_grade()} \n'+\
         f'Курсы в процессе изучения: {",".join(self.courses_in_progress)} \nЗавершенные курсы: {",".join(self.finished_courses)}'
         return res
  
 
     def mean_grade(self):
         '''Средняя оценка за ДР по всем курсам'''
-        grades_courses = [sum(x)/len(x) for x in self.grades.values()]  # Список средних оценок по отдельным курсам
-        return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+        grades_courses = [sum(x)/len(x) for x in self.grades.values() if len(x)>0]  # Список средних оценок по отдельным курсам
+        if len(grades_courses) > 0:
+            return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+        else:
+            return 0
 
 
     def add_course_progress(self, course_name):
@@ -70,22 +73,19 @@ class Lecturer(Mentor):
 
 
     def __str__(self):
-        # grades_courses = [sum(x)/len(x) for x in list(self.grades.values())] #среднее по каждому курсу
-        # grades_mean = sum(grades_courses)/len(grades_courses)
-        # res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за лекции: {grades_mean}'
         res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за лекции: {self.mean_grade()}'
         return res
 
 
     def mean_grade(self):
         '''Средняя оценка лектора'''
-        # res = 0
-        # for x_list in self.grades.values():
-        #     res += sum(x_list)/len(x_list)
-        # res /= len((self.grades.values()))
-        # return res
-        grades_courses = [sum(x)/len(x) for x in self.grades.values()]  # Список средних оценок по отдельным курсам
-        return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+        # grades_courses = [sum(x)/len(x) for x in self.grades.values()]  # Список средних оценок по отдельным курсам
+        # return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+        grades_courses = [sum(x)/len(x) for x in self.grades.values() if len(x)>0]  # Список средних оценок по отдельным курсам
+        if len(grades_courses) > 0:
+            return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+        else:
+            return 0
 
 
     def __lt__(self, lector):
@@ -117,14 +117,13 @@ class Reviewer(Mentor):
 
 
 
-
-
-
-
-
-
 best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
+best_student.add_course_progress('Python')
+#best_student.courses_in_progress += ['Python']
+
+bad_student = Student('Вася', 'Пупкин')
+bad_student.add_course_progress('Python')
+#bad_student.grades = {'Python': []}
  
 #cool_mentor = Mentor('Some', 'Buddy')
 cool_mentor = Reviewer('Some', 'Buddy')
@@ -148,3 +147,4 @@ lect1.grades = {'abc':[10,2], 'cde':[4,6]}
 # print(grades_all, grades_mean)
 print(lect1)
 print(lect1<cool_mentor)
+print(bad_student)
