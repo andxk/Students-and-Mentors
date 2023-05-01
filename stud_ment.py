@@ -7,8 +7,15 @@ class Student:
         self.courses_in_progress = []
         self.grades = {}
  
-    def add_course(self, course_name):
+    def add_course_progress(self, course_name):
+        self.courses_in_progress.append(course_name)   
+
+
+    def add_course_finished(self, course_name):
+        if course_name in self.courses_in_progress:
+            self.courses_in_progress.remove(course_name)
         self.finished_courses.append(course_name)   
+
  
      
 class Mentor:
@@ -65,7 +72,8 @@ class Reviewer(Mentor):
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
  
-cool_mentor = Mentor('Some', 'Buddy')
+#cool_mentor = Mentor('Some', 'Buddy')
+cool_mentor = Reviewer('Some', 'Buddy')
 cool_mentor.courses_attached += ['Python']
  
 cool_mentor.rate_hw(best_student, 'Python', 10)
