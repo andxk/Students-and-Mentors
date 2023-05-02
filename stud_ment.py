@@ -16,9 +16,21 @@ class Student:
 
     def mean_grade(self):
         '''Средняя оценка за ДР по всем курсам'''
-        grades_courses = [sum(x)/len(x) for x in self.grades.values() if len(x)>0]  # Список средних оценок по отдельным курсам
-        if len(grades_courses) > 0:
-            return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+        #grades_courses = [sum(x)/len(x) for x in self.grades.values() if len(x)>0]  # Список средних оценок по отдельным курсам
+        #if len(self.grades) > 0:
+
+        all_grades = []
+        for vals in list(self.grades.values()):
+            all_grades += vals
+
+        #all_grades.extend([g for g in [val for val in list(self.grades.values())]])
+        #all_grades = [ (gr for gr in val) for val in list(self.grades.values())]
+        # print(self.grades.values())
+        # print(len(self.grades.values()))
+        print(all_grades)
+        #return 100
+        if len(all_grades) > 0:
+            return sum(all_grades)/len(all_grades)  # Возвращаем среднюю оценку по всем курсам
         else:
             return 0
 
@@ -84,11 +96,20 @@ class Lecturer(Mentor):
         '''Средняя оценка лектора'''
         # grades_courses = [sum(x)/len(x) for x in self.grades.values()]  # Список средних оценок по отдельным курсам
         # return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
-        grades_courses = [sum(x)/len(x) for x in self.grades.values() if len(x)>0]  # Список средних оценок по отдельным курсам
-        if len(grades_courses) > 0:
-            return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+        # grades_courses = [sum(x)/len(x) for x in self.grades.values() if len(x)>0]  # Список средних оценок по отдельным курсам
+        # if len(grades_courses) > 0:
+        #     return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
+        # else:
+        #     return 0
+        all_grades = []
+        for vals in list(self.grades.values()):
+            all_grades += vals
+
+        if len(all_grades) > 0:
+            return sum(all_grades)/len(all_grades)  
         else:
             return 0
+
 
 
     def __lt__(self, lector):
@@ -112,7 +133,8 @@ class Reviewer(Mentor):
             else:
                 student.grades[course] = [grade]
         else:
-            return 'Ошибка'
+            print('Ошибка')
+
 
     def __str__(self):# -> str:
         res = f'Имя: {self.name} \nФамилия: {self.surname}'
@@ -121,20 +143,18 @@ class Reviewer(Mentor):
 
 
 best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.add_course_progress('Основы программирования')
-best_student.add_course_progress(['Python', 'Git', 'Pascal'])
+best_student.add_course_progress('Основы программирования')  # Добавление строки с названием курса
+best_student.add_course_progress(['Python', 'Git', 'Kotlin'])  # Добавление списка курсов
 best_student.add_course_progress('SuperProgrammer')
-best_student.add_course_finished('Basic')
-best_student.add_course_finished('Основы программирования')
+best_student.add_course_finished('Basic')  # Завершенный курс
+best_student.add_course_finished('Основы программирования')  # Завершенный, должен удалиться из изучаемых курсов
 # print(best_student)
 # print()
 
 bad_student = Student('Вася', 'Пупкин')
 bad_student.add_course_progress(['Python', 'Git', 'Basic'])
-bad_student.add_course_finished('Английский язык')
-#bad_student.grades = {'Python': []}
+bad_student.add_course_finished('Основы программирования')
  
-#cool_mentor = Mentor('Some', 'Buddy')
 cool_mentor = Lecturer('Some', 'Buddy')
 cool_mentor.courses_attached += ['Python', 'Kotlin', 'SuperProgrammer']
 
@@ -142,7 +162,7 @@ any_mentor = Lecturer('Петр', 'Иванович')
 any_mentor.courses_attached += ['Git', 'Основы программирования', 'Basic']
 
 first_reviewer = Reviewer('Анна', 'Сергеевна')
-first_reviewer.courses_attached += ['Git', 'Основы программирования', 'Java']
+first_reviewer.courses_attached += ['Git', 'Основы программирования', 'SuperProgrammer']
 
 smart_reviewer = Reviewer('Николай', 'Степанович')
 smart_reviewer.courses_attached += ['Python', 'Kotlin', 'Basic']
@@ -154,7 +174,8 @@ smart_reviewer.rate_hw(best_student, 'Python', 10)
 smart_reviewer.rate_hw(best_student, 'Python', 9)
 smart_reviewer.rate_hw(best_student, 'Python', 10)
 
-first_reviewer.rate_hw(best_student, 'Git', 10)
+first_reviewer.rate_hw(best_student, 'SuperProgrammer', 8)
+#first_reviewer.rate_hw(best_student, 'Kotlin', 10)
  
 print(best_student.grades)
 
