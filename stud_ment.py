@@ -10,7 +10,7 @@ class Student:
 
     def __str__(self):
         res = f'Имя: {self.name} \nФамилия: {self.surname} \nСредняя оценка за домашние задания: {self.mean_grade()} \n'+\
-        f'Курсы в процессе изучения: {",".join(self.courses_in_progress)} \nЗавершенные курсы: {",".join(self.finished_courses)}'
+        f'Курсы в процессе изучения: {", ".join(self.courses_in_progress)} \nЗавершенные курсы: {", ".join(self.finished_courses)}'
         return res
  
 
@@ -24,7 +24,10 @@ class Student:
 
 
     def add_course_progress(self, course_name):
-        self.courses_in_progress.append(course_name)   
+        if isinstance(course_name, list):
+            self.courses_in_progress.extend(course_name)   
+        else:
+            self.courses_in_progress.append(course_name)   
 
 
     def add_course_finished(self, course_name):
@@ -118,33 +121,55 @@ class Reviewer(Mentor):
 
 
 best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.add_course_progress('Python')
-#best_student.courses_in_progress += ['Python']
+best_student.add_course_progress('Основы программирования')
+best_student.add_course_progress(['Python', 'Git', 'Pascal'])
+best_student.add_course_progress('SuperProgrammer')
+best_student.add_course_finished('Basic')
+best_student.add_course_finished('Основы программирования')
+# print(best_student)
+# print()
 
 bad_student = Student('Вася', 'Пупкин')
-bad_student.add_course_progress('Python')
+bad_student.add_course_progress(['Python', 'Git', 'Basic'])
+bad_student.add_course_finished('Английский язык')
 #bad_student.grades = {'Python': []}
  
 #cool_mentor = Mentor('Some', 'Buddy')
-cool_mentor = Reviewer('Some', 'Buddy')
-cool_mentor.courses_attached += ['Python']
- 
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 9)
-cool_mentor.rate_hw(best_student, 'Python', 10)
+cool_mentor = Lecturer('Some', 'Buddy')
+cool_mentor.courses_attached += ['Python', 'Kotlin', 'SuperProgrammer']
 
+any_mentor = Lecturer('Петр', 'Иванович')
+any_mentor.courses_attached += ['Git', 'Основы программирования', 'Basic']
+
+first_reviewer = Reviewer('Анна', 'Сергеевна')
+first_reviewer.courses_attached += ['Git', 'Основы программирования', 'Java']
+
+smart_reviewer = Reviewer('Николай', 'Степанович')
+smart_reviewer.courses_attached += ['Python', 'Kotlin', 'Basic']
+
+
+
+
+smart_reviewer.rate_hw(best_student, 'Python', 10)
+smart_reviewer.rate_hw(best_student, 'Python', 9)
+smart_reviewer.rate_hw(best_student, 'Python', 10)
+
+first_reviewer.rate_hw(best_student, 'Git', 10)
  
 print(best_student.grades)
-print(cool_mentor)
 
-lect1 = Lecturer('Роман','Катин')
-lect1.grades = {'abc':[10,2], 'cde':[4,6]}
+#print(cool_mentor)
+
+print(best_student)
+
+# lect1 = Lecturer('Роман','Катин')
+# lect1.grades = {'abc':[10,2], 'cde':[4,6]}
 
 #grades_all = []
 # grades_all = [sum(x)/len(x) for x in list(lect1.grades.values())]
 # grades_mean = sum(grades_all)/len(grades_all)
 
 # print(grades_all, grades_mean)
-print(lect1)
-print(lect1<cool_mentor)
-print(bad_student)
+# print(lect1)
+# print(lect1<cool_mentor)
+# print(bad_student)
