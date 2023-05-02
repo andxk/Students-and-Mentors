@@ -16,19 +16,10 @@ class Student:
 
     def mean_grade(self):
         '''Средняя оценка за ДР по всем курсам'''
-        #grades_courses = [sum(x)/len(x) for x in self.grades.values() if len(x)>0]  # Список средних оценок по отдельным курсам
-        #if len(self.grades) > 0:
-
         all_grades = []
         for vals in list(self.grades.values()):
             all_grades += vals
 
-        #all_grades.extend([g for g in [val for val in list(self.grades.values())]])
-        #all_grades = [ (gr for gr in val) for val in list(self.grades.values())]
-        # print(self.grades.values())
-        # print(len(self.grades.values()))
-        print(all_grades)
-        #return 100
         if len(all_grades) > 0:
             return sum(all_grades)/len(all_grades)  # Возвращаем среднюю оценку по всем курсам
         else:
@@ -50,10 +41,12 @@ class Student:
 
     def rate_lector(self, lector, course, grade):
         '''Выставление оценки лектору'''
-        if course in [self.finished_courses + self.courses_in_progress]:
+        if course in (self.finished_courses + self.courses_in_progress):
             if isinstance(lector, Lecturer) and course in lector.courses_attached:
                 lector.grades.setdefault(course, [])
                 lector.grades[course] += [grade]
+        else:
+            print('Ошибка')
 
 
     def __lt__(self, other):
@@ -94,13 +87,6 @@ class Lecturer(Mentor):
 
     def mean_grade(self):
         '''Средняя оценка лектора'''
-        # grades_courses = [sum(x)/len(x) for x in self.grades.values()]  # Список средних оценок по отдельным курсам
-        # return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
-        # grades_courses = [sum(x)/len(x) for x in self.grades.values() if len(x)>0]  # Список средних оценок по отдельным курсам
-        # if len(grades_courses) > 0:
-        #     return sum(grades_courses)/len(grades_courses)  # Возвращаем среднюю оценку по всем курсам
-        # else:
-        #     return 0
         all_grades = []
         for vals in list(self.grades.values()):
             all_grades += vals
@@ -142,7 +128,7 @@ class Reviewer(Mentor):
 
 
 
-best_student = Student('Ruoy', 'Eman', 'your_gender')
+best_student = Student('Джон', 'Смитт', 'муж')
 best_student.add_course_progress('Основы программирования')  # Добавление строки с названием курса
 best_student.add_course_progress(['Python', 'Git', 'Kotlin'])  # Добавление списка курсов
 best_student.add_course_progress('SuperProgrammer')
@@ -155,7 +141,7 @@ bad_student = Student('Вася', 'Пупкин')
 bad_student.add_course_progress(['Python', 'Git', 'Basic'])
 bad_student.add_course_finished('Основы программирования')
  
-cool_mentor = Lecturer('Some', 'Buddy')
+cool_mentor = Lecturer('Иван', 'Петрович')
 cool_mentor.courses_attached += ['Python', 'Kotlin', 'SuperProgrammer']
 
 any_mentor = Lecturer('Петр', 'Иванович')
@@ -175,13 +161,34 @@ smart_reviewer.rate_hw(best_student, 'Python', 9)
 smart_reviewer.rate_hw(best_student, 'Python', 10)
 
 first_reviewer.rate_hw(best_student, 'SuperProgrammer', 8)
+
+smart_reviewer.rate_hw(bad_student, 'Python', 6)
+smart_reviewer.rate_hw(bad_student, 'Python', 8)
+
+first_reviewer.rate_hw(bad_student, 'Git', 8)
+
+
+best_student.rate_lector(cool_mentor, 'Python', 10)
+best_student.rate_lector(cool_mentor, 'SuperProgrammer', 8)
+
 #first_reviewer.rate_hw(best_student, 'Kotlin', 10)
  
-print(best_student.grades)
+#print(best_student.grades)
 
 #print(cool_mentor)
 
+print('1.')
 print(best_student)
+print('\n 2.')
+print(bad_student)
+print('\n 3.')
+print(cool_mentor)
+print('\n 4.')
+print(any_mentor)
+print('\n 5.')
+print(first_reviewer)
+print('\n 6.')
+print(smart_reviewer)
 
 # lect1 = Lecturer('Роман','Катин')
 # lect1.grades = {'abc':[10,2], 'cde':[4,6]}
