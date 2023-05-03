@@ -260,6 +260,16 @@ print('\n6.')
 print(smart_reviewer)
 print()
 
+#------------------
+print('Супертест')
+persons = [best_student, bad_student, cool_mentor, any_mentor, first_reviewer, smart_reviewer]
+for i,pers in enumerate(persons):
+    print(f'\n{i+1}.')
+    print(pers)
+print()
+#------------------
+
+
 #Сравнение средних оценок студентов и преподавателей
 print(f'Оценки Джона ниже оценок Васи: {best_student < bad_student}')
 print(f'Оценки Джона выше оценок Васи: {best_student > bad_student}')
