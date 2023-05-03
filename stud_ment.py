@@ -127,6 +127,57 @@ class Reviewer(Mentor):
 
 
 
+#-------------------------------------------------------------------------------
+
+##def mean_grade_course(student_list, course_name):
+##    if not isinstance(student_list, list) or not isinstance(course_name, str):
+##        return 0
+##    grades = [g for student in student_list  for g in student.grades.get(course_name, [])  if isinstance(student, Student)]
+##    print(grades)
+
+
+def mean_grade_course(person_list, course_name, class_person=Student):
+    '''
+    Подсчет средней оценки за курс (студенты (по умолч.) или лекторы)
+      person_list - список студентов или преподавателей
+      course_name - название курса
+      class_person - Student или Lecturer
+    '''
+
+    if not isinstance(person_list, list) or not isinstance(course_name, str):
+        return 0
+
+    # Генератор работает, но нечитаем и не помещается в 80 символов
+#    grades = [g for person in person_list  for g in person.grades.get(course_name, [])  if isinstance(person, class_person)]
+
+    grades = []
+    for person in person_list:
+        if isinstance(person, class_person):
+            for grade in person.grades.get(course_name, []):
+                grades.append(grade)
+#    print(grades)
+
+    if len(grades) > 0:
+        return(sum(grades) / len(grades))
+    else:
+        return 0;
+
+
+
+def mean_grade_course_mentors(lector_list, course_name):
+    '''
+    Подсчет средней оценки за курс только для лекторов
+      lector_list - список преподавателей
+      course_name - название курса
+    '''
+    return(mean_grade_course(lector_list, course_name, Lecturer))
+
+
+
+
+
+#-------------------------------------------------------------------------------
+
 # Заводим хорошего студента
 best_student = Student('Джон', 'Смитт', 'муж')
 best_student.add_course_progress('Основы программирования')  # Добавление строки с названием курса
@@ -214,4 +265,18 @@ print(f'Оценки Джона ниже оценок Васи: {best_student < 
 print(f'Оценки Джона выше оценок Васи: {best_student > bad_student}')
 print(f'Оценки Ивана Петровича ниже оценок Петра Ивановича: {cool_mentor < any_mentor}')
 print(f'Оценки Ивана Петровича выше оценок Петра Ивановича: {cool_mentor > any_mentor}')
+
+
+print()
+
+
+# Петр Иванович взялся за 'Python' ради получения оценок и проверки функций
+any_mentor.add_course('Python')
+best_student.rate_lector(any_mentor,'Python', 10)
+bad_student.rate_lector(any_mentor,'Python', 9)
+
+print('Средняя оценка по Python у студентов: ',\
+    mean_grade_course([best_student, bad_student], 'Python'))
+print('Средняя оценка по Python у лекторов:  ',\
+    mean_grade_course_mentors([cool_mentor, any_mentor], 'Python'))
 
